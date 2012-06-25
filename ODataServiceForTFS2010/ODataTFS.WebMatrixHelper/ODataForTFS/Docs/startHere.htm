@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>ODataForTFS WebMatrix Helper - Start Here</title>
+    <link href="content/Site.css" rel="stylesheet" type="text/css" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="content/images/webx-icon.png" alt="WebMatrix" />
+            <h1>
+                WebMatrix Helpers</h1>
+            <h2>
+                ODataForTFS Helper - Start Here</h2>
+        </div>
+        <div class="content">
+            <div class="navLinks">
+                <a href="reference.htm">Helper Reference</a></div>
+            <h3>
+                Introduction</h3>
+            <p>
+                Microsoft WebMatrix provides an easy way to get started with Web development, and
+                together with new Razor syntax for ASP.NET Web Pages it includes everything you
+                need to get your Web site up, running and integrated with many different sites and
+                networks. The WebMatrix helpers are designed to make your life easier when creating
+                Web sites. They provide you a simple and consistent way of performing common Web
+                development tasks that otherwise would require a great deal of custom coding. With
+                one single line of code you should be able to consume an OData feed, store information
+                in Windows Azure Storage, among other things.
+            </p>
+            <p>
+                The <strong>ODataForTFS</strong> helper allows you to easily retrieve and update data from a Team Foundation
+                Server through the OData Service for TFS. This helper is based on the <a href="http://odatahelper.codeplex.com/">OData helper</a>, so does not require that
+                you configure any specific client or create any custom class. You just need to provide the parameters to connect to the OData Service for TFS and the helper will take care
+                of retrieving and storing the content there. When the helper is in place, the users from your
+                site will have the following functionality available:
+            </p>
+            <ul>
+                <li><strong>File Bug</strong>: This capability is similar to the <em>Send-a-Smile</em> feature in Office
+                    2010. A <strong>File Bug</strong> icon is displayed allowing the users to file a new bug directly to Team
+                    Foundation Server. When the user clicks the icon, it will prompt a simple modal dialog where they can fill
+                    some basic information about the bug. The default Area Path for the new bug will be related to the current page.
+                </li>
+                <li><strong>Known Issues</strong>: This is the reverse of the above. When you click the <strong>Known Issues</strong>
+                    icon you are shown a list of the bugs for the contextual area of the application you are looking at. The key scenario
+                    here is for ad-hoc testers or user acceptance testing of an application. Prior to filing a new bug or exploring a 
+                    new set of functionality, they might want to explore what known issues exist based on the area of the application
+                    they are in.
+                </li>
+            </ul>
+
+            <p>
+                The helper includes the following files:
+            </p>
+            <ul>
+                <li>The <strong>ODataForTFS.cshtml</strong> file located into the <strong>App_Code</strong>
+                    folder inside you WebMatrix site.</li>
+                <li>The <strong>GetAreaPaths.cshtml</strong> file under the <strong>ODataForTFS</strong>
+                    folder that will handle requests to retrieve the available area paths in TFS.</li>
+                <li>The <strong>GetKnownIssues.cshtml</strong> file under the <strong>ODataForTFS</strong>
+                    folder that will handle requests to retrieve known issues for a given TFS area path.</li>
+                <li>The <strong>SaveKnownIssue.cshtml</strong> file under the <strong>ODataForTFS</strong>
+                    folder that will handle the creation of new bugs againts the OData service for TFS.</li>
+                <li>The <strong>Images</strong> and <strong>Styles</strong> folders located inside the
+                    <strong>ODataForTFS</strong> folder, with the required images and CSS styles for
+                    rendering the HTML of the "File Bug" and "Known Issues" dialogs.</li>
+            </ul>
+            <h3>
+                Getting Started in 60 Seconds</h3>
+            <p>
+                The easiest way to get started with the ODataForTFS helper is to use the <strong>Bakery</strong>
+                WebMatrix template, which includes four different pages where you can see the contextual feature for the bugs.  
+                Now, to start using the ODataForTFS helper follow these steps:</p>
+            <ol>
+                <li>Open <strong>Microsoft WebMatrix</strong> from <strong>Start</strong> | <strong>All Programs</strong> | <strong>Microsoft WebMatrix</strong>.
+                    In the <strong>Quick Start</strong> page, select <strong>Site From Template</strong> and then double-click <strong>Bakery</strong>.</li>
+                <li>Open the <strong>Files</strong> workspace, create a new page named <strong>_AppStart.cshtml</strong> 
+                    in the root of your WebMatrix site and replace its content with the following one.
+                    <div class="code">
+                        @{<br />
+                        <span class="codeIndent1 highlight">ODataForTFS.Initialize(&quot;<em><strong>%ODataTFSServiceEndpoint%</strong></em>&quot;, &quot;<em><strong>%TFSTeamProject%</strong></em>&quot;, &quot;<em><strong>%TFSRootAreaPath%</strong></em>&quot;, &quot;<em><strong>%TFSDomain%</strong></em>&quot;, &quot;<strong><em>%TFSUser%</em></strong>&quot;, &quot;<strong><em>%TFSPassword%</em></strong>&quot;);</span><br />
+                        }
+                    </div>
+                    You will need to replate the parameters of the <strong>Initialize</strong> 
+                    method with valid values for your OData Service for TFS instance and your
+                    TFS Team Project.
+                </li>
+                <li>Include and merge the files and folders of the ODataForTFS helper in your WebMatrix site. The ODataForTFS helper is 
+                    located at <strong>code\ODataTFS.WebMatrixHelper</strong>.</li>
+                <li>Open the <strong>ODataForTFS.cshtml</strong> file located under the <strong>App_Code</strong> folder
+                    and modify the value of the <strong>TFSDefaultWorkItemType</strong> constant to a valid Work Item type in your TFS team project.
+                    <div class="code">
+                        ...<br />
+                        @functions{<br />
+                        <span class="codeIndent1">private const string DefaultGetPage = &quot;ODataForTFS/GetKnownIssues&quot;;</span><br />
+                        <span class="codeIndent1">private const string DefaultSavePage = &quot;ODataForTFS/SaveKnownIssue&quot;;</span><br />
+                        <span class="codeIndent1">private const string DefaultAreasPage = &quot;ODataForTFS/GetAreaPaths&quot;;</span><br />
+                        <span class="codeIndent1">private const string DefaultHelperCssSheet = &quot;ODataForTFS/Styles/ODataForTFS.css&quot;;</span><br />
+                        <span class="codeIndent1">private const string DefaultPageSize = 10;</span><br />
+                        <span class="codeIndent1 highlight">private const string TFSDefaultWorkItemType = &quot;<em><strong>Work Item</strong></em>&quot;;</span><br />
+                        <span class="codeIndent1">...</span><br />
+                        }
+                    </div>                    
+                </li>
+                    <li>For each of the pages in your WebMatrix site, add the following line of code 
+                        indicating which is the TFS Area Path related to it.
+                        <div class="code">
+                            @{<br />
+                            <span class="codeIndent1">Page.Title = &quot;Your Page Title&quot;;</span><br />
+                            <span class="codeIndent1 highlight">Page.AreaPath = &quot;<em><strong>%TFSAreaPath%</strong></em>&quot;;</span><br />
+                            <span class="codeIndent1">...</span><br />
+                            }
+                        </div>
+                        Make sure to first create all the required Area Paths in your TFS Team Project.
+                    </li>
+                    <li>Add the following highlighted lines in the page where you want to show the
+                        <strong>File Bug</strong> and <strong>Known Issues</strong> dialogs. If you want 
+                        them to be available in all the pages, you can place these lines in the <strong>
+                        _SiteLayout.cshtml</strong> page.
+                        <div class="code">
+                            &lt;!DOCTYPE html&gt;<br />
+                            &lt;html&gt;<br />
+                            <span class="codeIndent1">&lt;head&gt;</span><br />
+                            <span class="codeIndent2">...</span><br />
+                            <span class="codeIndent2 highlight">@ODataForTFS.GetHeaderHtml()</span><br />
+                            <span class="codeIndent1">&lt;/head&gt;</span><br />
+                            <span class="codeIndent1">&lt;body&gt;</span><br />
+                            <span class="codeIndent2">...</span><br />
+                            <span class="codeIndent2">&lt;div id=&quot;footer&quot;&gt;</span><br />
+                            <span class="codeIndent3 highlight">@ODataForTFS.GetKnownIssuesHtml(&quot;knownissues&quot;, @Page.AreaPath)</span><br />
+                            <span class="codeIndent3 highlight">@ODataForTFS.GetFileBugHtml(&quot;filebug&quot;, @Page.AreaPath)</span><br />
+                            <span class="codeIndent3">&lt;div style=&quot;clear: both;&quot;&gt;&lt;/div&gt;</span><br />
+                            <span class="codeIndent2">&lt;/div&gt;</span><br />
+                            <span class="codeIndent1">&lt;/body&gt;</span><br />
+                            &lt;/html&gt;<br />
+                        </div>
+                    </li>
+                    <li>(Optional) Modify the CSS styles to customize the <strong>File Bug</strong> and <strong>Knwon Issues</strong> dialogs.</li>
+                    <li>That&#39;s it! The ODataForTFS helper will now allow your users to report and query 
+                        bugs in your WebMatrix site.</li>
+            </ol>
+            <h3>
+                Running the Bakery Sample 
+                Site</h3>
+            <p>
+                Optionally, you can 
+                check the sample WebMatrix web site where you can see the helper
+                in action. To run the sample, follow these steps.</p>
+            <ol>
+                <li>Navigate to the <strong>code</strong> folder in this package, right-click the <strong>ODataTFS.WebMatrixHelper.Sample</strong>
+                    folder and select '<strong>Open as a Web Site with Microsoft WebMatrix</strong>'.
+                    This will open the Bakery sample web site with WebMatrix.</li>
+                <li>Configure the parameters of the OData Service for TFS as explained above.</li>
+                <li>Click the <strong>Run</strong> button and play with the sample!</li>
+            </ol>
+            <h3>More Info</h3>
+                <p>You can get more information on the OData helper on the
+                   <a href="http://odatahelper.codeplex.com/">OData Helper CodePlex site</a>.
+                </p>
+                <p>
+                    Learn more on WebMatrix, ASP.NET Web Pages and the Razor Syntax with the 
+                    <a href="http://www.microsoft.com/web/webmatrix/learn/">WebMatrix tutorials.</a>
+                </p>                
+        </div>
+        <ul class="footer">
+            <li>&copy; 2010-2011 Microsoft Corporation. Powered by IIS Express.</li>
+        </ul>
+    </div>
+</body>
+</html>

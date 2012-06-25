@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ServiceConfiguration serviceName="ODataTFS.Cloud" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration">
+  <Role name="ODataTFS.Web">
+    <Instances count="2" />
+    <ConfigurationSettings>      
+      <Setting name="ODataTFS.TfsServer" value="https://tfs.codeplex.com/tfs" />
+      <Setting name="ODataTFS.AuthProvider" value="Microsoft.Samples.DPE.ODataTFS.Web.Infrastructure.TFSAuthProvider" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="codeplexodata.cloudapp.net" thumbprint="AF09E29436BF1B32176419FDDDFB4787E99FBFC1" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>

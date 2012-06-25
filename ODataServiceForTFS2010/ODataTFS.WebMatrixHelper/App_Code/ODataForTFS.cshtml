@@ -1,0 +1,438 @@
+﻿@using System;
+@using System.Collections.Generic;
+@using System.Net;
+@using System.Text;
+@using System.Web.WebPages.Scope;
+@using Microsoft.Web.Helpers;
+@using Microsoft.Win32;
+
+@functions {  
+    private const string DefaultGetPage = "ODataForTFS/GetKnownIssues";
+    private const string DefaultSavePage = "ODataForTFS/SaveKnownIssue";
+    private const string DefaultAreasPage = "ODataForTFS/GetAreaPaths";
+
+    private const string DefaultHelperCssSheet = "ODataForTFS/Styles/ODataForTFS.css";
+
+    private const int DefaultPageSize = 10;
+
+    // TFS CODEPLEX SETTINGS
+    private const string TFSDefaultWorkItemType = "Work Item";
+    
+    private static readonly object _authenticationScheme = new object();
+    private static readonly object _tfsEndpoint = new object();
+    private static readonly object _teamProjectName = new object();
+    private static readonly object _rootAreaPath = new object();
+
+    private static IAuthenticationScheme AuthenticationScheme {
+        get { return (IAuthenticationScheme)(ScopeStorage.CurrentScope[_authenticationScheme] ?? ""); }
+        set { ScopeStorage.CurrentScope[_authenticationScheme] = value; }
+    }
+    
+    private static string TFSEndpoint {
+        get { return (string)(ScopeStorage.CurrentScope[_tfsEndpoint] ?? ""); }
+        set { ScopeStorage.CurrentScope[_tfsEndpoint] = value; }
+    }
+
+    private static string TeamProjectName {
+        get { return (string)(ScopeStorage.CurrentScope[_teamProjectName] ?? ""); }
+        set { ScopeStorage.CurrentScope[_teamProjectName] = value; }
+    }
+
+    private static string RootAreaPath {
+        get { return (string)(ScopeStorage.CurrentScope[_rootAreaPath] ?? ""); }
+        set { ScopeStorage.CurrentScope[_rootAreaPath] = value; }
+    }
+        
+    public static void Initialize(string tfsEndpoint, string tfsTeamProjectName, string rootAreaPath, string tfsDomain, string tfsUser, string tfsPassword) {
+        // TODO: delete this line if you use a trusted certificate for the OData service
+        ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => { return true; };
+        
+        RootAreaPath = rootAreaPath;
+        TeamProjectName = tfsTeamProjectName;
+        TFSEndpoint = tfsEndpoint;
+        AuthenticationScheme = new BasicAuthenticationScheme(tfsDomain, tfsUser, tfsPassword);
+    }
+
+    public static void AddWorkItem(string title, string areaPath, string priority, string severity, string reproOrDescription, string type = TFSDefaultWorkItemType) {
+        var odataUri = TFSEndpoint.TrimEnd('/') + "/WorkItems";
+        var entity = OData.CreateEntity();
+        
+        entity.Title = title;
+        entity.Project = TeamProjectName;
+        entity.Type = type;
+        entity.AreaPath = areaPath;
+        entity.Priority = priority;
+        entity.Severity = severity;
+        entity.ReproSteps = reproOrDescription;
+        entity.Description = reproOrDescription;
+		entity.ChangedDate = DateTime.Now;
+
+        OData.Insert(odataUri, entity, AuthenticationScheme);
+    }
+    
+    public static IList<dynamic> GetWorkItems(string areaPath, int pageNumber = 0, string workItemType = TFSDefaultWorkItemType) {
+        var odataUri = TFSEndpoint.TrimEnd('/') + "/Projects('" + TeamProjectName +"')/WorkItems";
+        var initialized = false;
+
+        if (!string.IsNullOrWhiteSpace(areaPath)) {
+            odataUri += "?$filter=AreaPath eq '" + TeamProjectName + "\\" + areaPath + "'";
+            initialized = true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(workItemType)) {
+            odataUri += (initialized ? " and " : "?$filter=") + "Type eq '" + workItemType + "'";
+            initialized = true;
+        }
+        
+        pageNumber = pageNumber < 0 ? 0 : pageNumber;
+        odataUri += (initialized ? "&" : "?") + "$skip=" + pageNumber * DefaultPageSize + "&$top=" + DefaultPageSize + "&$orderby=Priority,Severity";
+        
+        return OData.Get(odataUri, AuthenticationScheme);
+    }
+    
+    public static IList<dynamic> GetAreaPaths() {
+        var odataUri = string.IsNullOrWhiteSpace(RootAreaPath)
+            ? TFSEndpoint.TrimEnd('/') + "/Projects('" + TeamProjectName + "')/AreaPaths" 
+            : TFSEndpoint.TrimEnd('/') + "/AreaPaths('" + TeamProjectName + "<" + RootAreaPath +"')/SubAreas";
+        
+        var areas = OData.Get(odataUri, AuthenticationScheme);
+        
+		foreach(var area in areas)
+		{
+			area.Path = area.Path.Replace('<', '\\');
+		}
+		return areas;
+    }
+    
+    public static bool SaveContentFromPost() {
+        if(IsPost) {
+            // AntiForgery validation
+            AntiForgery.Validate();
+            var contentKey = Request["odatafortfs-filebug_contentKey"];
+			int workItemId = -1;
+			try {
+				AddWorkItem(Request[contentKey + "_bugTitle"], Request[contentKey + "_bugArea"], Request[contentKey + "_bugPriority"], Request[contentKey + "_bugSeverity"], Request[contentKey + "_bugReproSteps"]);
+			}
+			catch {
+				return false;
+			}
+			
+			return true;
+        }
+		return false;
+	}
+    
+    public class BasicAuthenticationScheme : IAuthenticationScheme {
+        private readonly string tfsDomain;
+        private readonly string tfsUser;
+        private readonly string tfsPassword;
+    
+        public BasicAuthenticationScheme(string tfsDomain, string tfsUser, string tfsPassword) {
+            this.tfsDomain = tfsDomain;
+            this.tfsUser = tfsUser;
+            this.tfsPassword = tfsPassword;
+        }
+    
+        public void SignRequest(WebRequest request) {
+            string credentials = this.tfsDomain + "\\" + this.tfsUser + ":" + this.tfsPassword;
+    
+            request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(new ASCIIEncoding().GetBytes(credentials)));
+			request.Headers["DataServiceVersion"] = "2.0;NetFx";
+        }
+    }
+}
+
+@*
+Summary:
+    Outputs the necessary HTML headers for using the ODataForTFS helper
+
+Returns:
+    HTML Headers to render on your site
+*@
+@helper GetHeaderHtml(string helperCssSheet = DefaultHelperCssSheet) {
+    <text>
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+        <META HTTP-EQUIV="Expires" CONTENT="-1">
+    </text>
+    
+    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.4.js"></script>
+    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.ui/1.8.5/jquery-ui.min.js"></script>
+    <link type="text/css" href="http://ajax.microsoft.com/ajax/jquery.ui/1.8.5/themes/ui-lightness/jquery-ui.css" rel="Stylesheet" />
+    <link type="text/css" href="@Href("~/" + helperCssSheet)" rel="stylesheet" />
+}
+            
+@*
+Summary:
+    Displays known issues on the page
+
+Parameter: contentKey
+    Key value for the content to display
+
+Parameter: areaPath
+    TFS Area Path of the Known Issues to display
+
+Parameter: getPage
+    Url of the WebMatrix page that handles the retrieval of the known issues
+
+Returns:
+    HTML with Known Issues button
+*@
+@helper GetKnownIssuesHtml(string contentKey, string areaPath, string getPage = DefaultGetPage) {
+
+    <div id="@contentKey@{<text>_container</text>}">
+        <a id="@contentKey@{<text>_dialogShow</text>}" type="button" title="Known Issues" alt="Known Issues" class="odatafortfs-knownIssuesButton"></a>
+        <script type="text/javascript">
+        
+            function hasReproSteps(steps) {
+                return (steps && steps != "");
+            }
+        
+        </script>
+        
+        <script type="text/html" id="@contentKey@{<text>_rowTemplate</text>}">
+            <tr>
+                <td class="odatafortfs-idColumn"><a href=${WebEditorUrl} target="_blank" title="TFS Web Access">${Id}</a></td>
+                <td class="odatafortfs-titleColumn">${Title}</td>
+                <td class="odatafortfs-priorityColumn">${Priority}</td>
+                <td class="odatafortfs-severityColumn">${Severity}</td>
+                <td class="odatafortfs-stateColumn">${State}</td>
+                {{if hasReproSteps(ReproSteps)}}
+                    <td class="odatafortfs-reproStepsColumn">{{html ReproSteps}}</td>
+                {{else}}
+                    <td class="odatafortfs-reproStepsColumn">${Description}</td>
+                {{/if}}
+            </tr>
+        </script>
+
+        <script type="text/javascript">
+            $(function () {
+                var loadKnownIssues = function(issuesUrl)
+                {
+                    $("#@contentKey@{<text>_loading</text>}").show();
+                    $("#@contentKey@{<text>_errorMessage</text>}").hide();
+                    $("#@contentKey@{<text>_noResultsMessage</text>}").hide();
+                    $("#@contentKey@{<text>_knownIssuesInfo</text>}").hide();
+                    $.ajax({ url: issuesUrl, 
+                             success: displayRetrievedKnownIssues,
+                             error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                    $("#@contentKey@{<text>_loading</text>}").hide();
+                                    $("#@contentKey@{<text>_errorMessage</text>}").show();
+                                    $("#@contentKey@{<text>_noResultsMessage</text>}").hide();
+                                    $("#@contentKey@{<text>_knownIssuesInfo</text>}").hide();
+                                }
+                            });
+                }
+            
+                var displayRetrievedKnownIssues = function(data, textStatus, XMLHttpRequest)
+                {
+                    $("#@contentKey@{<text>_loading</text>}").hide();
+                    $("#@contentKey@{<text>_errorMessage</text>}").hide();
+                    
+                    if (((data == null) || (data.length == 0)) && (@contentKey@{<text>_pageNumber</text>} == 0)) {
+                        $("#@contentKey@{<text>_noResultsMessage</text>}").show();                                                            
+                    } else {
+                        $("#@contentKey@{<text>_knownIssuesInfo</text>}").show();
+                        if ((data == null) || (data.length == 0)) {
+                            $("#@contentKey@{<text>_dialogContainer</text>}").dialog("option", "buttons", { "Load More" : function() { alert('No more results to load.'); } });
+                            alert('No more results to load.');
+                        } else {
+                            $("#@contentKey@{<text>_rowTemplate</text>}").tmpl(data).appendTo("#@contentKey@{<text>_knownIssuesTable</text>}");
+                            $("#@contentKey@{<text>_dialogContainer</text>}").dialog("option", "buttons", { "Load More" : function() { loadKnownIssues(@contentKey@{<text>_baseUrl</text>} + "&pageNumber=" + ++@contentKey@{<text>_pageNumber</text>}); } });
+                        }
+                    }
+                }
+
+                var @contentKey@{<text>_dialog</text>} = $("#@contentKey@{<text>_dialogContainer</text>}").dialog({ modal: true, height: 450, width: 800, autoOpen: false, resizable: false });
+                var @contentKey@{<text>_baseUrl</text>} = "@Href("~/" + getPage)" + "?areaPath=" + "@areaPath";
+                var @contentKey@{<text>_pageNumber</text>} = 0;
+                
+                $("#@contentKey@{<text>_dialogShow</text>}").click(function () {
+                    @contentKey@{<text>_pageNumber</text>} = 0;
+                    $("#@contentKey@{<text>_knownIssuesTable</text>} tr:has(td)").remove();
+                    @contentKey@{<text>_dialog</text>}.dialog('open');
+                    loadKnownIssues(@contentKey@{<text>_baseUrl</text>});
+                });
+            
+            });
+        </script>
+            
+        <div id="@contentKey@{<text>_dialogContainer</text>}" class="known-issues-dialog-container" title="Known Issues - @areaPath">
+            <div id="@contentKey@{<text>_loading</text>}" title="Loading..." class="odatafortfs-loading" >
+            </div>
+            <div id="@contentKey@{<text>_errorMessage</text>}" style="display: none; text-align:center">
+                <p style="font-weight:bold;">There was an error retrieving the known issues. Please try again later.</p>
+			</div>
+            <div id="@contentKey@{<text>_noResultsMessage</text>}" style="display: none; text-align:center">
+                <p style="font-weight:bold;">There are no Known Issues logged for this area.</p>
+			</div>
+            <div id="@contentKey@{<text>_knownIssuesInfo</text>}" style="display: none">
+                <table id="@contentKey@{<text>_knownIssuesTable</text>}" class="odatafortfs-knownIssuesTable">
+                    <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Priority</th>
+                        <th>Severity</th>
+                        <th>State</th>
+                        <th>Steps to Reproduce / Description</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@*
+Summary:
+    Allows to submit a new bug for the contextual area
+
+Parameter: contentKey
+    Key value for the content to display
+
+Parameter: areaPath
+    TFS Area Path of the Known Issues to display
+
+Parameter: savePage
+    Url of the WebMatrix page that handles the persistence of the new bug
+
+Returns:
+    HTML with Known Issues button
+*@
+@helper GetFileBugHtml(string contentKey, string areaPath, string savePage = DefaultSavePage, string areasPage = DefaultAreasPage) {
+    <div id="@contentKey@{<text>_container</text>}">
+        <script type="text/javascript">
+            @{ 
+                var fullAreaPathName = TeamProjectName.Trim('\\');
+                fullAreaPathName += string.IsNullOrWhiteSpace(areaPath) ? "" : @"\\" +  areaPath.Trim('\\');
+                fullAreaPathName += string.IsNullOrWhiteSpace(RootAreaPath) ? "" : @"\\" +  RootAreaPath.Trim('\\');
+            }
+            
+            var isDefaultAreaPath = function(path)
+            {
+                return path == "@fullAreaPathName";
+			}
+
+            $.template( "areaPathTemplate", "{{if isDefaultAreaPath(Path)}}<option id='${Path}' selected='selected'>${Path}</option>{{else}}<option id='${Path}'>${Path}</option>{{/if}}");
+        
+            var loadAreaPaths = function() {
+                $("#@contentKey@{<text>_loadingAreas</text>}").show();
+                $("#@contentKey@{<text>_errorMessageAreas</text>}").hide();
+                $("#@contentKey@{<text>_bugArea</text>}").hide();
+                $("#@contentKey@{<text>_loading</text>}").hide();
+                $("#@contentKey@{<text>_bugArea</text>} option").remove();
+                $.ajax({ 
+                    url: "@Href("~/" + areasPage)", 
+                    success: function(data, textStatus, XMLHttpRequest) {
+                                $("#@contentKey@{<text>_bugArea</text>}").show();
+                                $("#@contentKey@{<text>_loadingAreas</text>}").hide();
+                                $.tmpl("areaPathTemplate", data).appendTo("#@contentKey@{<text>_bugArea</text>}");
+
+                            },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                $("#@contentKey@{<text>_errorMessageAreas</text>}").show();
+                                $("#@contentKey@{<text>_loadingAreas</text>}").hide();
+                            }
+                    });
+            }
+            
+            $(function () {
+                $("#@contentKey@{<text>_loading</text>}").hide();
+                var @contentKey@{<text>_dialog</text>} = $("#@contentKey@{<text>_dialogContainer</text>}").dialog({
+                        modal: true,
+                        height: 350,
+                        width: 700,
+                        autoOpen: false,
+                        resizable: false
+                });
+                
+                $("#@contentKey@{<text>_dialogShow</text>}").click(function () {
+					$("#@contentKey@{<text>_dialogContainer</text>}").dialog("option", "buttons", {
+						"File bug" :
+						function() {
+							$("#@contentKey@{<text>_loading</text>}").show();
+							$("#@contentKey@{<text>_form</text>}").hide();
+                            @contentKey@{<text>_dialog</text>}.dialog("option", "buttons", { } );
+                            $.ajax({
+								type: 'POST',
+                                url: "@Href("~/" + @savePage)",
+                                data: $("#@contentKey@{<text>_form</text>}").serialize(),
+                                success: function(data) {
+									$("#@contentKey@{<text>_loading</text>}").hide();
+									$("#@contentKey@{<text>_filed_successfully</text>}").show();
+									@contentKey@{<text>_dialog</text>}.dialog("option", "buttons", { "Close" : function() { @contentKey@{<text>_dialog</text>}.dialog('close'); } });
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
+									$("#@contentKey@{<text>_loading</text>}").hide();
+									$("#@contentKey@{<text>_filed_error</text>}").show();
+									@contentKey@{<text>_dialog</text>}.dialog("option", "buttons", { "Close" : function() { @contentKey@{<text>_dialog</text>}.dialog('close'); } });
+								}
+                            });
+						}
+					});
+
+                    $("#@contentKey@{<text>_filed_error</text>}").hide();
+					$("#@contentKey@{<text>_filed_successfully</text>}").hide();
+					$("#@contentKey@{<text>_form</text>}")[0].reset();
+					$("#@contentKey@{<text>_form</text>}").show();					
+                    @contentKey@{<text>_dialog</text>}.dialog('open');
+                    loadAreaPaths();
+                });
+            });
+
+        </script>
+
+        <a id="@contentKey@{<text>_dialogShow</text>}" title="File Bug" alt="File Bug" class="odatafortfs-fileBugButton"></a>        
+        <div id="@contentKey@{<text>_dialogContainer</text>}" class="new-issue-dialog-container" title="File Bug - @areaPath">
+			<div id="@contentKey@{<text>_filed_successfully</text>}" title="Bug filed Successfully" class="file-bug-message">
+			    Bug successfully created
+			</div>
+			<div id="@contentKey@{<text>_filed_error</text>}" title="Error" class="file-bug-message">
+			    An error occurred while saving the bug. Please try again later
+			</div>
+
+            <div id="@contentKey@{<text>_loading</text>}" title="Saving..." class="odatafortfs-loading">
+            </div>
+            <form id="@contentKey@{<text>_form</text>}" class="odatafortfs-fileBug">
+                <input type="hidden" id="odatafortfs-filebug_contentKey" name="odatafortfs-filebug_contentKey" value="@contentKey" />
+                <div>
+                    <label for="@contentKey@{<text>_bugArea</text>}" style="float:left">Area Path</label>
+                    <div id="@contentKey@{<text>_loadingAreas</text>}" class="odatafortfs-loading-small-icon" alt="Loading...">
+					</div>
+                    <div id="@contentKey@{<text>_errorMessageAreas</text>}" style="display:inline">
+                        There was an error retrieving the Area Paths. Please try again later
+                    </div>
+                    <select id="@contentKey@{<text>_bugArea</text>}" name="@contentKey@{<text>_bugArea</text>}" class="odatafortfs-areapaths-select">
+                        
+                    </select>
+                </div>
+                <div class="odatafortfs-clear">
+                    <label for="@contentKey@{<text>_bugTitle</text>}" style="float:left">Title</label>
+                    <input type="text" name="@contentKey@{<text>_bugTitle</text>}" id="@contentKey@{<text>_bugTitle</text>}" />
+                </div>
+                <div class="odatafortfs-left">
+                    <label for="@contentKey@{<text>_bugPriority</text>}">Priority</label>
+                    <select id="@contentKey@{<text>_bugPriority</text>}" name="@contentKey@{<text>_bugPriority</text>}">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="odatafortfs-right">
+                    <label for="@contentKey@{<text>_bugSeverity</text>}">Severity</label>
+                    <select id="@contentKey@{<text>_bugSeverity</text>}" name="@contentKey@{<text>_bugSeverity</text>}">
+                        <option value="1 - Critical">1 - Critical</option>
+                        <option value="2 - High">2 - High</option>
+                        <option value="3 - Medium">3 - Medium</option>
+                        <option value="4 - Low">4 - Low</option>
+                    </select>
+                </div>
+                <div class="odatafortfs-clear">
+                    <label for="@contentKey@{<text>_bugReproSteps</text>}" class="odatafortfs-block">Steps to Reproduce / Description</label>
+                    <textarea type="text" name="@contentKey@{<text>_bugReproSteps</text>}" id="@contentKey@{<text>_bugReproSteps</text>}"></textarea>
+                </div>
+                @AntiForgery.GetHtml()
+            </form>
+        </div>
+    </div>    
+}

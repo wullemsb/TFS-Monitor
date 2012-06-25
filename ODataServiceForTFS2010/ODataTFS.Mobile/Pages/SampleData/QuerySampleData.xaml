@@ -1,0 +1,13 @@
+﻿<entities:Query 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    Id="b972531e-ebcb-4cab-ab45-b134148980e0"
+    Name="My Work Items"
+    Path="$/MyTeamProject/My Queries"
+    Description="This query returns all the work items that are asigned to me"
+    Project="MyTeamProject"
+    QueryType="Query"
+    QueryText="Query Text">
+    
+</entities:Query>

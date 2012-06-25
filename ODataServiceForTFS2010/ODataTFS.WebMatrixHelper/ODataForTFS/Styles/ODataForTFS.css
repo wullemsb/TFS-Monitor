@@ -1,0 +1,164 @@
+﻿.odatafortfs-knownIssuesTable {
+    border-collapse: collapse;
+    margin-top: 3px;
+    width: 100%;
+}
+
+.odatafortfs-knownIssuesTable tr {
+    height: 30px;
+    vertical-align: top;
+}
+
+.odatafortfs-knownIssuesTable .odatafortfs-stateColumn {
+    width: 46px;
+    text-align: center;
+}
+
+.odatafortfs-knownIssuesTable .odatafortfs-idColumn a {
+    text-decoration: underline;
+}
+
+.odatafortfs-knownIssuesTable .odatafortfs-idColumn {
+    width: 30px;
+    text-align: center;
+}
+
+.odatafortfs-knownIssuesTable .odatafortfs-titleColumn {
+    width: 200px;
+}
+
+.odatafortfs-knownIssuesTable .odatafortfs-reproStepsColumn {
+    width: auto;
+}
+
+.odatafortfs-knownIssuesTable .odatafortfs-reproStepsColumn * {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.odatafortfs-knownIssuesTable .odatafortfs-priorityColumn {
+    width: 50px;
+    text-align: center;
+}
+
+.odatafortfs-knownIssuesTable .odatafortfs-severityColumn {
+    width: 70px;
+    text-align: center;
+}
+
+.odatafortfs-fileBug {
+    margin: 10px 5px 5px 5px;
+}
+
+.odatafortfs-fileBug div {
+    margin-bottom: 15px;
+}
+
+.odatafortfs-fileBug .odatafortfs-right {
+    float: right;
+    margin-right: 6px;
+}
+
+.odatafortfs-fileBug .odatafortfs-left {
+    float: left;
+}
+
+.odatafortfs-fileBug .odatafortfs-block {
+    display: block;
+    width: auto;
+}
+
+.odatafortfs-fileBug div label {
+    display: block;
+    width: 75px;
+    margin: 0px;
+    padding: 0px;
+    float: left;
+}
+
+.odatafortfs-fileBug div input {
+    width: 607px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.odatafortfs-fileBug div textarea {
+    width: 683px;
+    height: 85px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.odatafortfs-fileBug div select {
+    width: 100px;
+}
+
+.odatafortfs-areapaths-select {
+    width: 607px !important;
+}
+
+.odatafortfs-clear {
+    clear: both;
+}
+
+.odatafortfs-loading {
+    background: url(../Images/loading.gif) no-repeat center center;
+    height: 100%;
+    width: 100%;
+    display: block;
+}
+
+.odatafortfs-loading-small-icon {
+    background: url(../Images/loading-small.gif) no-repeat center center;
+    min-height: 16px;
+    min-width: 16px;
+    float: left;
+    display:inline;
+}
+
+.odatafortfs-knownIssuesButton {
+    background: url(../Images/knownissues.png) no-repeat 0px 0px;
+    display: inline-block;
+    border: 0px none;
+    cursor: pointer;
+    height: 32px;
+    width: 32px;
+    overflow: hidden;
+    padding: 0px;
+    text-indent: -1100px;
+    margin: 0px 0px 0px 5px;
+}
+
+.odatafortfs-fileBugButton {
+    background: url(../Images/filebug.png) no-repeat 0px 0px;
+    display: inline-block;
+    border: 0px none;
+    cursor: pointer;
+    height: 32px;
+    width: 32px;
+    overflow: hidden;
+    padding: 0px;
+    text-indent: -1100px;
+    margin: 0px 5px 0px 0px;
+}
+
+.known-issues-dialog-container {
+    display: none; 
+    padding: 0px !important; 
+    overflow: auto;
+}
+
+.new-issue-dialog-container {
+    display: none; 
+    padding: 0px !important; 
+    overflow: hidden !important;
+}
+
+.file-bug-message {
+    display: none;
+    font-size:120%;
+    margin-top:100px;
+    text-align:center;
+    vertical-align:middle;
+}

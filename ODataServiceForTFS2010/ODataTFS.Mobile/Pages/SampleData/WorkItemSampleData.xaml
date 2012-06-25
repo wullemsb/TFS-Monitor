@@ -1,0 +1,28 @@
+﻿<entities:WorkItem 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    Id="1258"
+    Title="Sample WorkItem Title"
+    Project="SampleTeamProject"
+    AssignedTo="john.doe"
+    ChangedBy="john.doe"
+    CreatedBy="john.doe"
+    Type="Bug"
+    Priority="2"
+    Severity="4 - Low"
+    Reason="New"
+    State="Active"
+    StackRank="4.5"
+    Revision="1"
+    CreatedDate="10/11/2010"
+    ChangedDate="10/11/2010"
+    AreaPath="Area/SubArea"
+    IterationPath="Iteration/SubIteration"
+    Description="This is very a long description for a sample Work Item in Team Foundation Server 2010..."
+    ReproSteps="These are the steps to reproduce the bug found..."
+    FoundInBuild="FoundInBuildNumber"
+    IntegratedInBuild="IntegratedInBuildNumber"
+    WebEditorUrl="http://sampleuri">
+    
+</entities:WorkItem>

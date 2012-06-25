@@ -1,0 +1,16 @@
+﻿<local:WorkItemListViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Mobile.ViewModels"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    IsSearching="True"
+    HasResults="True"
+    PageNumber="1">
+
+    <local:WorkItemListViewModel.Items>
+        <entities:WorkItem Id="1250" Title="Improve UI" AssignedTo="johnp" Type="Task" />
+        <entities:WorkItem Id="1325" Title="Fix Login Page" AssignedTo="johnd" Type="Bug" />
+        <entities:WorkItem Id="1850" Title="Add SSL certificate" AssignedTo="mary" Type="Task" />
+    </local:WorkItemListViewModel.Items>
+
+</local:WorkItemListViewModel>

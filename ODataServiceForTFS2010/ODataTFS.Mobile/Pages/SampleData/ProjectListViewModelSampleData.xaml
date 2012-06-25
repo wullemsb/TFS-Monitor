@@ -1,0 +1,17 @@
+﻿<local:ProjectListViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Mobile.ViewModels"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    IsSearching="True"
+    HasResults="True"
+    PageNumber="1">
+
+    <local:ProjectListViewModel.Items>
+        <entities:Project Name="SampleTeamProject1" Description="This is the description of a sample TFS Team Project 1..." Collection="SampleTFSCollection" />
+        <entities:Project Name="SampleTeamProject2" Description="This is the description of a sample TFS Team Project 2..." Collection="SampleTFSCollection" />
+        <entities:Project Name="SampleTeamProject3" Description="This is the description of a sample TFS Team Project 3..." Collection="SampleTFSCollection" />
+        <entities:Project Name="SampleTeamProject4" Description="This is the description of a sample TFS Team Project 4..." Collection="SampleTFSCollection" />
+    </local:ProjectListViewModel.Items>
+
+</local:ProjectListViewModel>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="ODataTFS.Cloud" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
+  <WebRole name="ODataTFS.Web">
+    <Sites>
+      <Site name="Web">
+        <Bindings>
+          <Binding name="HttpsIn" endpointName="HttpsIn" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <ConfigurationSettings>      
+      <Setting name="ODataTFS.AuthProvider" />
+      <Setting name="ODataTFS.TfsServer" />
+    </ConfigurationSettings>
+    <Startup>
+      <Task commandLine="SetupFiles\InstallVisualCRedist.cmd" executionContext="elevated" taskType="simple" />
+      <Task commandLine="SetupFiles\InstallTFSObjectModel.cmd" executionContext="elevated" taskType="simple" />
+      <Task commandLine="SetupFiles\SetupIIS.cmd" executionContext="elevated" taskType="simple" />
+    </Startup>
+    <Certificates>
+      <Certificate name="codeplexodata.cloudapp.net" storeLocation="LocalMachine" storeName="My" />
+    </Certificates>
+    <Endpoints>
+      <InputEndpoint name="HttpsIn" protocol="https" port="443" certificate="codeplexodata.cloudapp.net" />
+    </Endpoints>
+    <Imports>
+    </Imports>
+  </WebRole>
+</ServiceDefinition>

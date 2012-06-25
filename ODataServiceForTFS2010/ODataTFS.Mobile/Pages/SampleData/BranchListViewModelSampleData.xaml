@@ -1,0 +1,17 @@
+﻿<local:BranchListViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Mobile.ViewModels"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    IsSearching="True"
+    HasResults="True"
+    PageNumber="1">
+
+    <local:BranchListViewModel.Items>
+        <entities:Branch Path="$/SampleTeamProject/Folder 1" Description="Main branch for Folder 1" DateCreated="10/11/2010" />
+        <entities:Branch Path="$/SampleTeamProject/Folder 1 - Branch" Description="Branch for Folder 1" DateCreated="10/11/2010" />
+        <entities:Branch Path="$/SampleTeamProject/Folder 2" Description="Main branch for Folder 2" DateCreated="11/11/2010" />
+        <entities:Branch Path="$/SampleTeamProject/Folder 2 - Branch" Description="Branch for Folder 2" DateCreated="11/11/2010" />
+    </local:BranchListViewModel.Items>
+
+</local:BranchListViewModel>

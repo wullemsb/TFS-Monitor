@@ -1,0 +1,14 @@
+@{
+    var areaPath = HttpContext.Current.Request.QueryString["areaPath"];
+    var page = HttpContext.Current.Request.QueryString["pageNumber"];
+    
+    int pageNumber;
+    if (!int.TryParse(page, out pageNumber)) { pageNumber = 0; }
+    
+	var workItems = ODataForTFS.GetWorkItems(areaPath, pageNumber);
+    
+    Response.ClearContent();
+    Response.AppendHeader("Content-Type", "application/json");
+    Response.Write(Json.Encode(workItems));
+    Response.End();
+}

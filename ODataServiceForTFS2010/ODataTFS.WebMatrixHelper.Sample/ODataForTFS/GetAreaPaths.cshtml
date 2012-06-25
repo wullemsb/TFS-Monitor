@@ -1,0 +1,7 @@
+@{  
+	var areas = ODataForTFS.GetAreaPaths();
+    Response.ClearContent();
+    Response.AppendHeader("Content-Type", "application/json");
+    Response.Write(Json.Encode(areas));
+    Response.End();
+}

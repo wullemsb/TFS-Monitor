@@ -1,0 +1,12 @@
+﻿<entities:Changeset 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    Id="788"
+    Comment="Fixing code style and source analysis errors in the OData for TFS solution"
+    Committer="john.doe"
+    Owner="john.doe"
+    CreationDate="11/11/2010"
+    ArtifactUri="vstfs:///VersionControl/Changeset/788"
+    WebEditorUrl="http://sampleuri">    
+</entities:Changeset>

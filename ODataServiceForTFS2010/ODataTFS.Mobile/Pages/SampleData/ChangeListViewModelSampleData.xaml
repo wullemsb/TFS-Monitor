@@ -1,0 +1,16 @@
+﻿<local:ChangeListViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Mobile.ViewModels"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    IsSearching="True"
+    HasResults="True"
+    PageNumber="1">
+
+    <local:ChangeListViewModel.Items>
+        <entities:Change Changeset="782" Collection="TFS18" ChangeType="Merge" Path="$/SampleProjectWithBuilds/Project.Web/Web.role" Type="File" />
+        <entities:Change Changeset="151" Collection="TFS18" ChangeType="Add" Path="$/Global.asax" Type="File" />
+        <entities:Change Changeset="873" Collection="TFS18" ChangeType="Rename" Path="$/SampleProjectWithBuilds/Project.Web" Type="Folder" />
+    </local:ChangeListViewModel.Items>
+
+</local:ChangeListViewModel>

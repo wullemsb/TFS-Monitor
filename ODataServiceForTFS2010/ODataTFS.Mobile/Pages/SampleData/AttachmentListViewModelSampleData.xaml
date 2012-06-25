@@ -1,0 +1,16 @@
+﻿<local:AttachmentListViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Mobile.ViewModels"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    IsSearching="True"
+    HasResults="True"
+    PageNumber="1">
+
+    <local:AttachmentListViewModel.Items>
+        <entities:Attachment Id="1250-0" Name="Sample Text File" Extension=".txt" AttachedTime="07/11/2010"/>
+        <entities:Attachment Id="1250-0" Name="Sample Document" Extension=".docx" AttachedTime="08/11/2010"/>
+        <entities:Attachment Id="1250-0" Name="Sample Image" Extension=".png" AttachedTime="09/11/2010"/>
+    </local:AttachmentListViewModel.Items>
+
+</local:AttachmentListViewModel>

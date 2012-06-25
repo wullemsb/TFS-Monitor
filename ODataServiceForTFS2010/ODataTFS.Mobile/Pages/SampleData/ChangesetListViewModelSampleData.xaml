@@ -1,0 +1,17 @@
+﻿<local:ChangesetListViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Mobile.ViewModels"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    IsSearching="True"
+    HasResults="True"
+    PageNumber="1">
+
+    <local:ChangesetListViewModel.Items>
+        <entities:Changeset Id="788" Comment="Fixing code style" Committer="michaelf" />
+        <entities:Changeset Id="359" Comment="Setting config to Dev Env" Committer="tomg" />
+        <entities:Changeset Id="565" Comment="Refactoring Service" Committer="tomg" />
+        <entities:Changeset Id="955" Comment="Adding certificate" Committer="mary" />
+    </local:ChangesetListViewModel.Items>
+
+</local:ChangesetListViewModel>

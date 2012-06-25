@@ -1,0 +1,17 @@
+﻿<local:BuildListViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Mobile.ViewModels"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    IsSearching="True"
+    HasResults="True"
+    PageNumber="1">
+
+    <local:BuildListViewModel.Items>
+        <entities:Build Project="SampleTeamProject" Definition="SampleBuildDefinition" Number="SampleBuildDefinition_20101111.1" />
+        <entities:Build Project="SampleTeamProject" Definition="SampleBuildDefinition" Number="SampleBuildDefinition_20101111.2" />
+        <entities:Build Project="SampleTeamProject" Definition="OtherBuildDefinition" Number="OtherBuildDefinition_20101111.1" />
+        <entities:Build Project="SampleTeamProject" Definition="OtherBuildDefinition" Number="OtherBuildDefinition_20101111.2" />
+    </local:BuildListViewModel.Items>
+
+</local:BuildListViewModel>

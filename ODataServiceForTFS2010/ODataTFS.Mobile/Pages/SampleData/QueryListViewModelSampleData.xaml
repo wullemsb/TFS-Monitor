@@ -1,0 +1,17 @@
+﻿<local:QueryListViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Mobile.ViewModels"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    IsSearching="True"
+    HasResults="True"
+    PageNumber="1">
+
+    <local:QueryListViewModel.Items>
+        <entities:Query Id="b972531e-ebcb-4cab-ab45-b134148980e0" Name="My Work Items" Path="$/MyTeamProject/My Queries" QueryType="Query" />
+        <entities:Query Id="94527d54-8da0-4572-93f7-89309b7f9668" Name="My Tasks" Path="$/MyTeamProject/My Queries" QueryType="List" />
+        <entities:Query Id="573aac27-f5ae-4f66-8028-0978bbc0da3d" Name="Pending Bugs" Path="$/MyTeamProject/Project Queries" QueryType="List" />
+        <entities:Query Id="2d26b6a7-9bd6-42d2-94c7-c2a1d3b7956b" Name="Pending Tasks" Path="$/MyTeamProject/Project Queries" QueryType="Query" />
+    </local:QueryListViewModel.Items>
+
+</local:QueryListViewModel>

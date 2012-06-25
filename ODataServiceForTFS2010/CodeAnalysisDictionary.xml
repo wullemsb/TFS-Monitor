@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>Changeset</Word>
+      <Word>Changesets</Word>
+      <Word>WorkItem</Word>
+      <Word>CreateRelation</Word>
+      <Word>DPE</Word>
+      <Word>WorkItems</Word>
+      <Word>AssignedTo</Word>
+      <Word>ArtifactUri</Word>
+      <Word>SubAreas</Word>
+      <Word>StartTime</Word>
+      <Word>RequestedFor</Word>
+      <Word>RequestedBy</Word>
+      <Word>FinishTime</Word>
+      <Word>BuildFinished</Word>
+
+      <Word>eq</Word>
+      <Word>gt</Word>
+      <Word>lt</Word>
+    </Recognized>
+  </Words>
+</Dictionary>
+

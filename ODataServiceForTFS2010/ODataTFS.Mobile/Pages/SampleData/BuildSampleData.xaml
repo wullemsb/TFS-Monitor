@@ -1,0 +1,21 @@
+﻿<entities:Build 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    Project="SampleTeamProject"
+    Definition="SampleBuildDefinition"
+    Number="BuildDefinition1_20101111.1"
+    Reason="Manual"
+    Status="Succeeded"    
+    Quality="Initial Test Passed"
+    DropLocation="\\Server\SharedFolder"
+    Warnings="Could not resolve this reference. Could not locate the assembly 'Microsoft.TeamFoundation.WorkItemTracking.Controls'. Check to make sure the assembly exists on disk. If this reference is required by your code, you may get compilation errors"
+    RequestedBy="john.doe"
+    RequestedFor="john.doe"
+    LastChangedBy="mary"
+    StartTime="11/11/2010 10:15AM"
+    FinishTime="11/11/2010 10:20AM"
+    LastChangedOn="11/11/2010 10:30AM"
+    BuildFinished="true">
+    
+</entities:Build>

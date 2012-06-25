@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>    
+    <title>ODataForTFS WebMatrix Helper - Helper Reference</title>
+    <link href="content/site.css" rel="stylesheet" type="text/css" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="content/images/webx-icon.png" alt="WebMatrix" />
+            <h1>WebMatrix Helpers</h1>
+            <h2>ODataForTFS Helper - Reference</h2>
+        </div>
+        <div class="content">
+        <div class="navLinks"><a href="startHere.htm")">Start Here</a></div>                           
+        <h3>Helper Methods</h3>
+            <table class="memberdecls">
+              <tr>
+                <td class="memItemLeft">static void</td>
+                <td class="memItemRight" ><strong>Initialize</strong> (string tfsEndpoint, string tfsTeamProjectName, string rootAreaPath, string tfsDomain, string tfsUser, string tfsPassword)</td>
+              </tr>
+              <tr>
+                <td class="mdescLeft">&nbsp;</td>
+                <td class="mdescRight" >Initializes the ODataForTFS helper with the parameters for 
+                    the OData Service for TFS and the Team Foundation Server.</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft">@helper</td>
+                <td class="memItemRight" ><strong>GetHeaderHtml</strong> ([string helperCssSheet])</td>
+              </tr>
+              <tr>
+                <td class="mdescLeft">&nbsp;</td>
+                <td class="mdescRight" >Outputs the necessary HTML headers for using the ODataForTFS 
+                    helper. The path of the CSS sheet for the helper can be specified to customize the 
+                    defualt UI.</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft">@helper</td>
+                <td class="memItemRight" ><strong>GetKnownIssuesHtml</strong> (string contentKey, string areaPath, [string getPage])</td>
+              </tr>
+              <tr>
+                <td class="mdescLeft">&nbsp;</td>
+                <td class="mdescRight" >Displays the Known Issues icon on the page. When the 
+                    user clicks it, shows a modal dialog with all the bugs for the current context 
+                    page.</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft">@helper</td>
+                <td class="memItemRight" ><strong>GetFileBugHtml</strong> (string contentKey, string areaPath, [string savePage], [string areasPage])</td>
+              </tr>
+              <tr>
+                <td class="mdescLeft">&nbsp;</td>
+                <td class="mdescRight" >Displays the File Bug icon on the page. When the 
+                    user clicks it, shows a modal dialog to allow the user to submit basic
+                    information about the new bug.</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft">static void</td>
+                <td class="memItemRight" ><strong>AddWorkItem</strong> (string title, string areaPath, string priority, string severity, string reproOrDescription, [string type])</td>
+              </tr>
+              <tr>
+                <td class="mdescLeft">&nbsp;</td>
+                <td class="mdescRight" >Creates a new work item and stores it using the OData Service for TFS.</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft">static IList&lt;dynamic&gt;</td>
+                <td class="memItemRight" ><strong>GetWorkItems</strong> (string areaPath, [int pageNumber = 0], [string workItemType])</td>
+              </tr>
+              <tr>
+                <td class="mdescLeft">&nbsp;</td>
+                <td class="mdescRight" >Returns a list of the work items in TFS for the areaPaths specified. If a pageNumber is provided, returns only the work items for that page, otherwise returns the first page.</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft">static IList&lt;dynamic&gt;</td>
+                <td class="memItemRight" ><strong>GetAreaPaths</strong> ()</td>
+              </tr>
+              <tr>
+                <td class="mdescLeft">&nbsp;</td>
+                <td class="mdescRight" >Returns a list of the available TFS area paths for the TFS Team Project configured.</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft">static void</td>
+                <td class="memItemRight" ><strong>SaveContentFromPost</strong> ()</td>
+              </tr>
+              <tr>
+                <td class="mdescLeft">&nbsp;</td>
+                <td class="mdescRight" >Stores content data sent from a form POST.</td>
+              </tr>
+              <tr><td class="memItemLeft"></td><td class="memItemRight"></td></tr>        
+          </table>                     
+      </div>
+        <ul class="footer">
+            <li>&copy; 2010-2011 Microsoft Corporation. Powered by IIS Express.</li>
+        </ul>
+    </div>
+</body>
+</html>

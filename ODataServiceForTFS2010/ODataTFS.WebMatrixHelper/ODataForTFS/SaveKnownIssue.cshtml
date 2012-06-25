@@ -1,0 +1,16 @@
+@{
+    if(ODataForTFS.SaveContentFromPost())
+	{
+		Response.ClearContent();
+		Response.AppendHeader("Content-Type", "text/plain");
+		Response.Write("success");
+	}
+	else
+	{
+		Response.ClearContent();
+		Response.AppendHeader("Content-Type", "text/plain");
+		Response.Write("failure");
+	}
+
+	Response.End();
+}

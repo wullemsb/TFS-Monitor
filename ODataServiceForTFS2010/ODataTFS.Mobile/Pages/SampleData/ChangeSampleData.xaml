@@ -1,0 +1,10 @@
+﻿<entities:Change
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:entities="clr-namespace:Microsoft.Samples.DPE.ODataTFS.Model.Entities"
+    Collection="TFS18"
+    Changeset="782"
+    ChangeType="Merge"
+    Type="File"
+    Path="$/SampleProjectWithBuilds/Project.Web/Web.role">
+</entities:Change>
