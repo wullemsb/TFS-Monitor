@@ -15,6 +15,7 @@
 
 			container.RegisterPhoneServices();
             container.PerRequest<MainPageViewModel>();
+            container.PerRequest<SettingsPageViewModel>();
 
             AddCustomConventions();
         }
@@ -36,6 +37,8 @@
 
         static void AddCustomConventions()
         {
+            ConventionManager.AddElementConvention<ToggleSwitch>(ToggleSwitch.IsCheckedProperty, "IsChecked", "Click");
+
             ConventionManager.AddElementConvention<Pivot>(Pivot.ItemsSourceProperty, "SelectedItem", "SelectionChanged").ApplyBinding =
                 (viewModelType, path, property, element, convention) => {
                     if (ConventionManager

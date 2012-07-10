@@ -96,14 +96,12 @@
     <Compile Include="Model\Query.cs" />
     <Compile Include="Model\TFSData.cs" />
     <Compile Include="Model\WorkItem.cs" />
-    <Compile Include="PanoramaPage1.xaml.cs">
-      <DependentUpon>PanoramaPage1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SettingsPageViewModel.cs" />
+    <Compile Include="SettingsPageViewModelStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -111,10 +109,6 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PanoramaPage1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -137,7 +131,40 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Icons\appbar.add.rest.png" />
+    <Content Include="Icons\appbar.back.rest.png" />
+    <Content Include="Icons\appbar.basecircle.rest.png" />
+    <Content Include="Icons\appbar.cancel.rest.png" />
+    <Content Include="Icons\appbar.check.rest.png" />
+    <Content Include="Icons\appbar.close.rest.png" />
+    <Content Include="Icons\appbar.delete.rest.png" />
+    <Content Include="Icons\appbar.download.rest.png" />
+    <Content Include="Icons\appbar.edit.rest.png" />
+    <Content Include="Icons\appbar.favs.addto.rest.png" />
+    <Content Include="Icons\appbar.favs.rest.png" />
+    <Content Include="Icons\appbar.feature.camera.rest.png" />
+    <Content Include="Icons\appbar.feature.email.rest.png" />
+    <Content Include="Icons\appbar.feature.search.rest.png" />
+    <Content Include="Icons\appbar.feature.settings.rest.png" />
+    <Content Include="Icons\appbar.feature.video.rest.png" />
+    <Content Include="Icons\appbar.folder.rest.png" />
+    <Content Include="Icons\appbar.minus.rest.png" />
+    <Content Include="Icons\appbar.new.rest.png" />
+    <Content Include="Icons\appbar.next.rest.png" />
+    <Content Include="Icons\appbar.overflowdots.png" />
+    <Content Include="Icons\appbar.questionmark.rest.png" />
+    <Content Include="Icons\appbar.refresh.rest.png" />
+    <Content Include="Icons\appbar.save.rest.png" />
+    <Content Include="Icons\appbar.share.rest.png" />
+    <Content Include="Icons\appbar.stop.rest.png" />
+    <Content Include="Icons\appbar.sync.rest.png" />
+    <Content Include="Icons\appbar.transport.ff.rest.png" />
+    <Content Include="Icons\appbar.transport.pause.rest.png" />
+    <Content Include="Icons\appbar.transport.play.rest.png" />
+    <Content Include="Icons\appbar.transport.rew.rest.png" />
+    <Content Include="Icons\appbar.upload.rest.png" />
     <Content Include="SplashScreenImage.jpg" />
+    <Content Include="StartIcon.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
