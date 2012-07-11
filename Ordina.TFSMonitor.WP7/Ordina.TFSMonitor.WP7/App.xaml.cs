@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 
 namespace Ordina.TFSMonitor.WP7
 {
@@ -61,23 +62,44 @@ namespace Ordina.TFSMonitor.WP7
         {
         }
 
-        // Code to execute if a navigation fails
-        private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
-        {
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                // A navigation has failed; break into the debugger
-                System.Diagnostics.Debugger.Break();
-            }
-        }
-
-        // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                // An unhandled exception has occurred; break into the debugger
+                // An unhandled exception has occurred; break into the debugger                
                 System.Diagnostics.Debugger.Break();
+            }
+            else
+            {
+                OnAnyError(e.ExceptionObject);
+            }
+            e.Handled = true;  //optional
+        }
+
+        private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                // A navigation has failed; break into the debugger                
+                System.Diagnostics.Debugger.Break();
+            }
+            else
+            {
+                OnAnyError(e.Exception);
+            }
+            e.Handled = true;
+            //optional
+        }
+
+        private void OnAnyError(Exception e)
+        {
+            if (MessageBox.Show("Do we have your permission to send this error to our support team?  That way they can fix it so it doesn't happen again.  We'll show you the entire message before it's sent.", "Application error", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                EmailComposeTask emailComposeTask = new EmailComposeTask();
+                emailComposeTask.To = "tfssupport@ordina.be";
+                emailComposeTask.Subject = "An error in TFS Monitor.";
+                emailComposeTask.Body = e.ToString();
+                emailComposeTask.Show();
             }
         }
     }
