@@ -1,10 +1,12 @@
-﻿namespace Ordina.TFSMonitor.WP7 {
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Controls;
-    using Microsoft.Phone.Controls;
-    using Caliburn.Micro;
+﻿using Ordina.TFSMonitor.Model.Entities;
+using System;
+using System.Collections.Generic;
+using System.Windows.Controls;
+using Microsoft.Phone.Controls;
+using Caliburn.Micro;
 
+namespace Ordina.TFSMonitor.WP7 
+{
     public class AppBootstrapper : PhoneBootstrapper
     {
         PhoneContainer container;
@@ -15,7 +17,10 @@
 
 			container.RegisterPhoneServices();
             container.PerRequest<MainPageViewModel>();
-            container.PerRequest<SettingsPageViewModel>();
+            container.Singleton<SettingsPageViewModel>();
+            container.PerRequest<TFSDataServiceContext>();
+            container.PerRequest<RecentProjectsViewModel>();
+            container.PerRequest<AllProjectsViewModel>();
 
             AddCustomConventions();
         }

@@ -54,6 +54,9 @@
     <Reference Include="Caliburn.Micro.Extensions">
       <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\sl4-windowsphone71\Caliburn.Micro.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Coding4Fun.Phone.Controls">
+      <HintPath>..\packages\Coding4Fun.Phone.Controls.1.5.6\lib\sl4-windowsphone71\Coding4Fun.Phone.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="JeffWilcox.PhoneThemeManager">
       <HintPath>..\packages\PhoneThemeManager.1.01\lib\sl4-windowsphone71\JeffWilcox.PhoneThemeManager.dll</HintPath>
     </Reference>
@@ -78,6 +81,10 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllProjectsView.xaml.cs">
+      <DependentUpon>AllProjectsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AllProjectsViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -92,11 +99,16 @@
     <Compile Include="Model\Build.cs" />
     <Compile Include="Model\Change.cs" />
     <Compile Include="Model\Changeset.cs" />
+    <Compile Include="Model\TFSDataServiceContext.partial.cs" />
     <Compile Include="Model\Project.cs" />
     <Compile Include="Model\Query.cs" />
-    <Compile Include="Model\TFSData.cs" />
+    <Compile Include="Model\TFSDataServiceContext.cs" />
     <Compile Include="Model\WorkItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecentProjectsView.xaml.cs">
+      <DependentUpon>RecentProjectsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RecentProjectsViewModel.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -108,7 +120,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="AllProjectsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecentProjectsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
