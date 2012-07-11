@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Caliburn.Micro;
-using Microsoft.Samples.DPE.ODataTFS.Model.Entities;
+using Ordina.TFSMonitor.Model.Entities;
 
 namespace Ordina.TFSMonitor.WP7
 {
@@ -25,6 +25,7 @@ namespace Ordina.TFSMonitor.WP7
         private bool _workitemNotificationsEnabled;
         private bool _changesetNotificationsEnabled;
         private bool _buildNotificationsEnabled;
+        private bool _isAuthenticated;
 
         public SettingsPageViewModel()
         {
@@ -36,25 +37,25 @@ namespace Ordina.TFSMonitor.WP7
         public string ServiceUrl
         {
             get { return _serviceUrl; }
-            set { _serviceUrl = value; NotifyOfPropertyChange(() => this.ServiceUrl); }
+            set { _serviceUrl = value; NotifyOfPropertyChange(() => this.ServiceUrl); NotifyOfPropertyChange(() => this.CanTestCredentials); }
         }
 
         public string Domain
         {
             get { return _domain; }
-            set { _domain = value; NotifyOfPropertyChange(() => this.Domain); }
+            set { _domain = value; NotifyOfPropertyChange(() => this.Domain); NotifyOfPropertyChange(() => this.CanTestCredentials); }
         }
 
         public string User
         {
             get { return _user; }
-            set { _user = value; NotifyOfPropertyChange(() => this.User); }
+            set { _user = value; NotifyOfPropertyChange(() => this.User); NotifyOfPropertyChange(() => this.CanTestCredentials); }
         }
 
         public string Password
         {
             get { return _password; }
-            set { _password = value; NotifyOfPropertyChange(() => this.Password); }
+            set { _password = value; NotifyOfPropertyChange(() => this.Password); NotifyOfPropertyChange(() => this.CanTestCredentials); }
         }
 
         public bool AllNotificationsEnabled
@@ -62,7 +63,7 @@ namespace Ordina.TFSMonitor.WP7
             get { return _allNotificationsEnabled; }
             set
             {
-                _allNotificationsEnabled = value; 
+                _allNotificationsEnabled = value;
                 NotifyOfPropertyChange(() => this.AllNotificationsEnabled);
                 WorkitemNotificationsEnabled = value;
                 ChangesetNotificationsEnabled = value;
@@ -91,17 +92,27 @@ namespace Ordina.TFSMonitor.WP7
         public string TestStatus { get; private set; }
 
 
+        public bool CanTestCredentials
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(this.ServiceUrl) && !string.IsNullOrWhiteSpace(User) &&
+                       !string.IsNullOrWhiteSpace(Domain) && !string.IsNullOrWhiteSpace(Password);
+            }
+        }
+
+        public bool IsAuthenticated
+        {
+            get { return _isAuthenticated; }
+            set { _isAuthenticated = value; NotifyOfPropertyChange(() => this.IsAuthenticated); }
+        }
+
         public void TestCredentials()
         {
-            var context = new TFSData(new Uri(this.ServiceUrl));
+            var context = IoC.Get<TFSDataServiceContext>();
             var requestUri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}/Projects?$top=1&$select=Name", this.ServiceUrl), UriKind.Absolute);
 
-            context.SendingRequest += (s, e) =>
-            {
-                var credentials = string.Format(@"{0}\{1}:{2}", this.Domain, this.User, this.Password);
-                e.RequestHeaders["Authorization"] = string.Format(CultureInfo.InvariantCulture, "Basic {0}", Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(credentials)));
-            };
-
+            //TODO: replace by IResult syntax
             context.BeginExecute<Project>(
                 requestUri,
                 r =>
@@ -110,26 +121,18 @@ namespace Ordina.TFSMonitor.WP7
                     {
                         var result = context.EndExecute<Project>(r) as QueryOperationResponse<Project>;
 
+                        this.IsAuthenticated = true;
                         this.TestStatus = "Authentication succeeded";
                     }
                     catch (Exception ex)
                     {
+                        this.IsAuthenticated = true;
                         this.TestStatus = "Authentication failed";
                     }
 
                     NotifyOfPropertyChange(() => this.TestStatus);
                 },
                 null);
-        }
-
-        public void Save()
-        {
-           //TODO
-        }
-
-        public void Cancel()
-        {
-            //TODO
         }
     }
 }
