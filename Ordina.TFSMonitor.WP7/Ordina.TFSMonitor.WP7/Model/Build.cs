@@ -26,10 +26,10 @@
 
 // Original file name: TFSModel.cs
 // Generation date: 03/11/2010 08:13:31 p.m.
-namespace Microsoft.Samples.DPE.ODataTFS.Model.Entities
+namespace Ordina.TFSMonitor.Model.Entities
 {
     /// <summary>
-    /// There are no comments for Microsoft.Samples.DPE.ODataTFS.Model.Entities.Build in the schema.
+    /// There are no comments for Ordina.TFSMonitor.Model.Entities.Build in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Definition
