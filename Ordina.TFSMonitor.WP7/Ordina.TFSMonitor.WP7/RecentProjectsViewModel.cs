@@ -26,10 +26,17 @@ namespace Ordina.TFSMonitor.WP7
             base.OnInitialize();
 
             this.RecentProjects=new BindableCollection<Project>();
-            for (int i = 0; i < 5;i++ )
-                this.RecentProjects.Add(new Project() { Name = "Test"+i });
+            for (int i = 0; i < 5; i++)
+                this.RecentProjects.Add(new Project() { Name = "Test" + i });
+
+            NotifyOfPropertyChange(()=> this.NoRecentProjects);
         }
 
         public IObservableCollection<Project> RecentProjects { get; set; }
+
+        public bool NoRecentProjects
+        {
+            get { return RecentProjects.Count == 0; }
+        }
     }
 }
