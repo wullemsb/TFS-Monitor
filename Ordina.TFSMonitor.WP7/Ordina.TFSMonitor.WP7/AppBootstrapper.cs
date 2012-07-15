@@ -11,6 +11,11 @@ namespace Ordina.TFSMonitor.WP7
     {
         PhoneContainer container;
 
+        protected override PhoneApplicationFrame CreatePhoneApplicationFrame()
+        {
+            return new TransitionFrame();
+        }
+
         protected override void Configure()
         {
             container = new PhoneContainer(RootFrame);
