@@ -48,7 +48,7 @@
             <shell:ApplicationBar.Buttons>
                 <cal:AppBarButton IconUri='Icons/appbar.feature.settings.rest.png'  
                                   Text='settings'  
-                                  Message='GotoSettings' />
+                                  Message='GoToSettings' />
                 <cal:AppBarButton IconUri='Icons/appbar.questionmark.rest.png'  
                                   Text='about'  
                                   Message='GoToAbout' />

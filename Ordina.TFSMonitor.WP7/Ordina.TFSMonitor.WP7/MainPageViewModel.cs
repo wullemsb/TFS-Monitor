@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 
 namespace Ordina.TFSMonitor.WP7 {
     public class MainPageViewModel:Conductor<IScreen>.Collection.OneActive
@@ -10,14 +11,19 @@ namespace Ordina.TFSMonitor.WP7 {
             _navigationService = navigationService;
         }
 
-        public void GotoSettings()
+        public void GoToSettings()
         {
             _navigationService
                 .UriFor<SettingsPageViewModel>()
                 .Navigate();
         }  
 
-         protected override void OnInitialize()
+        public void GoToAbout()
+        {
+            _navigationService.Navigate(new Uri("/YourLastAboutDialog;component/AboutPage.xaml", UriKind.Relative));
+        }
+
+        protected override void OnInitialize()
          {
              var recentProjects = IoC.Get<RecentProjectsViewModel>();
              recentProjects.DisplayName = "recent";    
