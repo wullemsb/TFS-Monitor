@@ -10,6 +10,23 @@
     d:DesignWidth="400">
     
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Margin="5" Grid.Row="0" Text="Service URL:"/>
+        <TextBlock Margin="5" Grid.Row="1" Text="Domain"/>
+        <TextBlock Margin="5" Grid.Row="2" Text="Username"/>
+        <TextBlock Margin="5" Grid.Row="3" Text="Password"/>
+        <TextBox Margin="5" Name="ServiceUrl" Grid.Row="0" Grid.Column="1" />
+        <TextBox Margin="5" Name="Domain" Grid.Row="1" Grid.Column="1" />
+        <TextBox Margin="5" Name="Username" Grid.Row="2" Grid.Column="1" />
+        <TextBox Margin="5" Name="Password" Grid.Row="3" Grid.Column="1" />
     </Grid>
 </UserControl>

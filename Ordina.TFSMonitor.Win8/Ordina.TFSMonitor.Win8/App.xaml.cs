@@ -89,7 +89,11 @@ namespace Ordina.TFSMonitor.Win8
             {
                 var settings = new SettingsFlyout
                 {
-                    Content = new AccountSettingsView(),
+                    Content = new AccountSettingsView() 
+                    { 
+                        Width=346,
+                        Height=Window.Current.Bounds.Height
+                    },
                     HeaderText = "My Account",
                     IsOpen = true
                 };
